@@ -11,7 +11,7 @@ const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
-        ignoredPaths: ["users.nonSerializable"], // pass that v=error in array which shown in console in `` that
+        ignoredPaths: ["users.nonSerializable"], // pass that error in array which shown in console in `` that
       },
     }).concat(logger),
 });

@@ -1,10 +1,15 @@
 import { useEffect } from "react";
-import { fetchUsers, addNonSerializable } from "../redux/slices/Users.slice";
+import {
+    fetchUsers,
+    addNonSerializable,
+} from "../redux/slices/Users.slice";
 import { useDispatch, useSelector } from "react-redux";
 
 const Users = () => {
     const dispatch = useDispatch();
-    const { users, loading, error, lastUpdated } = useSelector((state) => state.users);
+    const { users, loading, error, lastUpdated } = useSelector(
+        (state) => state.users
+    );
 
     useEffect(() => {
         dispatch(fetchUsers());
@@ -24,6 +29,21 @@ const Users = () => {
             <button onClick={() => dispatch(addNonSerializable())}>
                 Add Non-Serializable Value
             </button>
+
+            {/* <button
+                onClick={() =>
+                    dispatch(
+                        mutateUsersDirectly({
+                            id: 123,
+                            name: "Test",
+                            email: "test@example.com",
+                        })
+                    )
+                }
+            >
+                Trigger Mutation Bug
+            </button> */}
+
             <ul>
                 {users.map((user) => (
                     <li key={user.id}>

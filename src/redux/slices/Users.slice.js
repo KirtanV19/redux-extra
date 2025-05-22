@@ -19,11 +19,25 @@ const user = createSlice({
     error: null,
     lastUpdated: null,
     nonSerializable: null,
+    value: 0,
   },
   reducers: {
     addNonSerializable: (state) => {
       state.nonSerializable = new Map(); // Map is non-serializable
     },
+    /*
+    mutateUsersDirectly: (state, action) => {
+      // This line is problematic because it mutates the state.users array directly
+      // by pushing a new user object. Normally Immer handles mutations, but
+      // if you mutate nested non-proxied objects, middleware will catch it.
+      state.users.push(action.payload); // Should be safe in RTK, so let's cause error by freezing
+
+      // Let's freeze the users array to simulate mutation error
+      Object.freeze(state.users);
+
+      // Now mutate frozen array (will cause immutability middleware error)
+      state.users.push({ id: 999, name: "Bug User", email: "bug@example.com" });
+    },*/
   },
   extraReducers: (builder) => {
     builder
@@ -42,5 +56,5 @@ const user = createSlice({
   },
 });
 
-export const { addNonSerializable } = user.actions;
+export const { addNonSerializable, mutateUsersDirectly } = user.actions;
 export default user.reducer;
