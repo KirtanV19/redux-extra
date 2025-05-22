@@ -1,14 +1,14 @@
-import React from "react";
-import { useGetPostsQuery } from "../API/postapi";
+import { useGetPostsQuery } from '../API/postapi';
 
 const PostLists = () => {
-    const { data: posts, isLoading, error } = useGetPostsQuery();
-    if (isLoading) return <p>Loading...</p>;
-    if (error) return <p>Error loading posts!</p>;
+    const { data: posts, isLoading, isError, error } = useGetPostsQuery();
+
+    if (isLoading) return <p>Loading posts...</p>;
+    if (isError) return <p style={{ color: 'red' }}>Error: {error?.status || 'Something went wrong'}</p>;
 
     return (
-        <ul className="mt-2 p-2 border border-gray-400 bg-slate-300 w-2/5">
-            {posts.slice(0, 5).map((post) => (
+        <ul>
+            {posts?.map((post) => (
                 <li key={post.id}>{post.title}</li>
             ))}
         </ul>

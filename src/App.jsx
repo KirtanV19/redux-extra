@@ -1,5 +1,6 @@
 import PostLists from "./components/PostLists";
 import AddPostForm from "./components/AddPostForm";
+
 const App = () => {
   return (
     <div>
