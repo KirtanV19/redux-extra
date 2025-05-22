@@ -1,9 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
+import { postApi } from "../API/postapi";
 
-import { logger } from "../middlewares/logger";
-
-import userReducer from "./slices/Users.slice";
-
+/*
 const store = configureStore({
   reducer: {
     users: userReducer,
@@ -15,7 +13,15 @@ const store = configureStore({
       },
     }).concat(logger),
 });
+*/
 
+const store = configureStore({
+  reducer: {
+    [postApi.reducerPath]: postApi.reducer,
+  },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(postApi.middleware),
+});
 export default store;
 
 /*
