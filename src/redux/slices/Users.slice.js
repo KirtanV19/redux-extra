@@ -18,8 +18,13 @@ const user = createSlice({
     loading: false,
     error: null,
     lastUpdated: null,
+    nonSerializable: null,
   },
-
+  reducers: {
+    addNonSerializable: (state) => {
+      state.nonSerializable = new Map(); // Map is non-serializable
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchUsers.pending, (state) => {
@@ -37,4 +42,5 @@ const user = createSlice({
   },
 });
 
+export const { addNonSerializable } = user.actions;
 export default user.reducer;

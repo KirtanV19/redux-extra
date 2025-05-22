@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { fetchUsers } from "../redux/slices/Users.slice";
+import { fetchUsers, addNonSerializable } from "../redux/slices/Users.slice";
 import { useDispatch, useSelector } from "react-redux";
 
 const Users = () => {
@@ -18,7 +18,12 @@ const Users = () => {
             {lastUpdated && (
                 <p>Last Updated: {new Date(lastUpdated).toLocaleString()}</p>
             )}
+            {loading && <p>Loading...</p>}
+            {error && <p>Error: {error}</p>}
 
+            <button onClick={() => dispatch(addNonSerializable())}>
+                Add Non-Serializable Value
+            </button>
             <ul>
                 {users.map((user) => (
                     <li key={user.id}>

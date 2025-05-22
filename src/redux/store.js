@@ -8,7 +8,12 @@ const store = configureStore({
   reducer: {
     users: userReducer,
   },
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredPaths: ["users.nonSerializable"], // pass that v=error in array which shown in console in `` that
+      },
+    }).concat(logger),
 });
 
 export default store;
