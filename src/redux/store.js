@@ -24,6 +24,7 @@ const store = configureStore({
 });
 export default store;
 */
+
 /*
 🧠 What is Serializable Middleware?
 Serializable Middleware (specifically serializableCheck) is part of the default middleware that Redux Toolkit provides.
@@ -64,6 +65,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import storage from "redux-persist/lib/storage";
 import { persistReducer, persistStore } from "redux-persist";
 import rootReducer from "./rootReducer";
+import { postApi } from "../API/postapi";
 
 const persistConfig = {
   key: "root",
@@ -74,7 +76,10 @@ const persistConfig = {
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 const store = configureStore({
-  reducer: persistedReducer,
+  reducer: {
+    ...persistedReducer,
+    [postApi.reducerPath]: postApi.reducer,
+  },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: false, // required for redux-persist
