@@ -17,28 +17,30 @@ const user = createSlice({
     users: [],
     loading: false,
     error: null,
-    lastUpdated: null,
-    nonSerializable: null,
-    value: 0,
+    // lastUpdated: null,
+    // nonSerializable: null,
+    // value: 0,
   },
-  reducers: {
-    addNonSerializable: (state) => {
-      state.nonSerializable = new Map(); // Map is non-serializable
-    },
-    /*
-    mutateUsersDirectly: (state, action) => {
-      // This line is problematic because it mutates the state.users array directly
-      // by pushing a new user object. Normally Immer handles mutations, but
-      // if you mutate nested non-proxied objects, middleware will catch it.
-      state.users.push(action.payload); // Should be safe in RTK, so let's cause error by freezing
+  // reducers: {
+  //   /*
+  //   addNonSerializable: (state) => {
+  //     state.nonSerializable = new Map(); // Map is non-serializable
+  //   },
+  //   */
+  //   /*
+  //   mutateUsersDirectly: (state, action) => {
+  //     // This line is problematic because it mutates the state.users array directly
+  //     // by pushing a new user object. Normally Immer handles mutations, but
+  //     // if you mutate nested non-proxied objects, middleware will catch it.
+  //     state.users.push(action.payload); // Should be safe in RTK, so let's cause error by freezing
 
-      // Let's freeze the users array to simulate mutation error
-      Object.freeze(state.users);
+  //     // Let's freeze the users array to simulate mutation error
+  //     Object.freeze(state.users);
 
-      // Now mutate frozen array (will cause immutability middleware error)
-      state.users.push({ id: 999, name: "Bug User", email: "bug@example.com" });
-    },*/
-  },
+  //     // Now mutate frozen array (will cause immutability middleware error)
+  //     state.users.push({ id: 999, name: "Bug User", email: "bug@example.com" });
+  //   },*/
+  // },
   extraReducers: (builder) => {
     builder
       .addCase(fetchUsers.pending, (state) => {
@@ -47,7 +49,7 @@ const user = createSlice({
       .addCase(fetchUsers.fulfilled, (state, action) => {
         state.loading = false;
         state.users = action.payload;
-        state.lastUpdated = Date.now();
+        // state.lastUpdated = Date.now();
       })
       .addCase(fetchUsers.rejected, (state, action) => {
         state.loading = false;
@@ -56,5 +58,5 @@ const user = createSlice({
   },
 });
 
-export const { addNonSerializable, mutateUsersDirectly } = user.actions;
+// export const { addNonSerializable } = user.actions;
 export default user.reducer;
