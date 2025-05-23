@@ -76,14 +76,11 @@ const persistConfig = {
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 const store = configureStore({
-  reducer: {
-    ...persistedReducer,
-    [postApi.reducerPath]: postApi.reducer,
-  },
+  reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: false, // required for redux-persist
-    }),
+    }).concat(postApi.middleware),
 });
 
 const persistor = persistStore(store);
