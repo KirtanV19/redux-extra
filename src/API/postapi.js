@@ -2,26 +2,34 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const postApi = createApi({
   reducerPath: "postApi",
-
   baseQuery: fetchBaseQuery({
     baseUrl: "https://jsonplaceholder.typicode.com/",
   }),
-
   tagTypes: ["Post"],
-
   endpoints: (builder) => ({
     getPosts: builder.query({
       query: () => "posts",
       providesTags: ["Post"],
     }),
+
     addPost: builder.mutation({
       query: (newPost) => ({
         url: "posts",
         method: "POST",
         body: newPost,
       }),
-      invalidatesTags: ["Post"],
+      async onQueryStarted(newPost, { dispatch, queryFulfilled }) {
+        try {
+          const { data: addedPost } = await queryFulfilled;
+          dispatch(
+            postApi.util.updateQueryData("getPosts", undefined, (draft) => {
+              draft.push(addedPost);
+            })
+          );
+        } catch {}
+      },
     }),
+
     updatePost: builder.mutation({
       query: ({ id, ...patch }) => ({
         url: `posts/${id}`,
@@ -30,12 +38,22 @@ export const postApi = createApi({
       }),
       invalidatesTags: ["Post"],
     }),
+
     deletePost: builder.mutation({
       query: (id) => ({
         url: `posts/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["Post"],
+      async onQueryStarted(id, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled;
+          dispatch(
+            postApi.util.updateQueryData("getPosts", undefined, (draft) => {
+              return draft.filter((post) => post.id !== id);
+            })
+          );
+        } catch {}
+      },
     }),
   }),
 });

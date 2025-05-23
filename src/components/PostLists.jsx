@@ -13,8 +13,9 @@ const PostLists = () => {
         );
 
     const handleDelete = async (id) => {
-        if (window.confirm("are you sure?")) {
+        if (window.confirm("Are you sure?")) {
             await deletePost(id);
+            // no refetch needed here
         }
     };
 
